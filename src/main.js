@@ -8,7 +8,6 @@ function createDomElement(className){
     return newElm;
 }
 
-
 const game = new Game(createDomElement, drawDomElement);
 game.start();
 
