@@ -2,11 +2,13 @@ class Game{
     constructor(create, draw){
         this.set = [];
         this.tube = null;
-        this.numberOfTube = 2;
+        this.numberOfTube = 4;
         this.tubeSlot = 4;
         this.colors = ["blue","red"];
         this.draw = draw;
         this.create = create;
+        this.position1 = 0;
+        this.position2 = 0;
     }
 
 
@@ -19,6 +21,10 @@ class Game{
 
         this.grabcontent();
         this.checkTube(this.set[2]);
+
+        console.log(this.position1);
+        console.log(this.set[this.position1]);
+
     }
 
     
@@ -30,7 +36,6 @@ class Game{
             }
             this.set.push(tube)
         }
-        console.log(this.set)
     }
 
     emptyTubes(){
@@ -51,8 +56,10 @@ class Game{
         this.set.forEach((element,index) => {
             
             this.tube = new Tube();
-            this.tube.domELement = this.create(`tube ${index}`);
-            console.log(this.tube.domElement);
+
+            this.tube.domELement = this.create (`tube ${index}`);
+            this.selectTube();
+            
             element.forEach((elm)=>{
                 let item = document.createElement("li");
                 item.innerHTML = elm;
@@ -63,10 +70,15 @@ class Game{
     }
 
     
-
+    
     selectTube(){
-        
+        this.tube.domELement.addEventListener("click", function(){
+            this.position1 = parseInt(this.classList[1],10);
+            console.log(this.position1);
+        })
     }
+
+
     grabcontent(selection1){
 
     }
@@ -86,9 +98,10 @@ class Tube{
     constructor(){
         this.width = 30
         this.heigth = 30
-        this.domElement = null
+        // this.domElement = null
     }
 }
+
 
 
 
