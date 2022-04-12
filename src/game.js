@@ -7,6 +7,8 @@ class Game{
         this.colors = ["blue","red"];
         this.draw = draw;
         this.create = create;
+
+        this.selectedClass = [];
         this.position1 = 0;
         this.position2 = 0;
     }
@@ -20,11 +22,6 @@ class Game{
         this.drawTube();
 
         this.grabcontent();
-        this.checkTube(this.set[2]);
-
-        console.log(this.position1);
-        console.log(this.set[this.position1]);
-
     }
 
     
@@ -58,7 +55,7 @@ class Game{
             this.tube = new Tube();
 
             this.tube.domELement = this.create (`tube ${index}`);
-            this.selectTube();
+            this.selectTube(this.selectedClass);
             
             element.forEach((elm)=>{
                 let item = document.createElement("li");
@@ -71,26 +68,52 @@ class Game{
 
     
     
-    selectTube(){
+    selectTube(selectedClass){
+        let selected;
         this.tube.domELement.addEventListener("click", function(){
-            this.position1 = parseInt(this.classList[1],10);
-            console.log(this.position1);
+            selected = parseInt(this.classList[1],10);
+
+            if(selectedClass.length < 2 && selected != selectedClass[0]) {
+                selectedClass.push(selected)
+            } else {
+                selectedClass.splice(0, selectedClass.length);
+            }
+            
+            if (selectedClass.length ===2 && selectedClass[0] != selectedClass[1]){
+                game.checkTube()
+            }
         })
     }
+
+
 
 
     grabcontent(selection1){
 
     }
 
-    checkTube(selection2){
-        if (selection2[-1] === 'air'){
-            console.log('true');
-            return true
+    checkTube(){
+        console.log(this.set[this.selectedClass[0]]);
+        console.log(this.set[this.selectedClass[1]]);
+
+        if (this.set[this.selectedClass[0]].indexOf('air') != -1){
+            console.log(true)
+        } else if (this.set[this.selectedClass[1]].indexOf('air') != -1){
+            console.log(true)
         } else {
-            console.log('false');
-            return false
+            this.selectedClass.splice(0,this.selectedClass.length)
+            console.log(false);
         }
+
+ 
+
+        // if (selection2[-1] === 'air'){
+        //     console.log('true');
+        //     return true
+        // } else {
+        //     console.log('false');
+        //     return false
+        // }
     }
 }
 
@@ -98,7 +121,6 @@ class Tube{
     constructor(){
         this.width = 30
         this.heigth = 30
-        // this.domElement = null
     }
 }
 
