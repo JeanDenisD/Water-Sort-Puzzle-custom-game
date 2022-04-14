@@ -1,128 +1,182 @@
-class Game{
-    constructor(create, draw){
-        this.set = [];
+class Game {
+    constructor(create) { //, draw
         this.tube = null;
-        this.numberOfTube = 4;
+        this.numberOfTube= 2;
         this.tubeSlot = 4;
-        this.colors = ["blue","red"];
-        this.draw = draw;
+        this.colors = ["red", "blue", "yellow", "green", "purple", "lightgreen", "lightblue", "orange", "sienna", "grey","darkred","deeppink"];
         this.create = create;
-
         this.selectedClass = [];
-        this.position1 = 0;
-        this.position2 = 0;
+        this.parentTubes = [];
+        this.testTube = null;
+        this.collection = [];
+        this.completeTube = 0
+        this.undoCollection = []
     }
 
 
-    start(){
+    start() {
         console.log('Water Sort Puzzle')
-
-        this.fullTubes();
-        this.emptyTubes();
-        this.drawTube();
-
-        this.grabcontent();
-    }
-
-    
-    fullTubes(){
-        for (let i = 0 ; i <  this.numberOfTube ; i++){
-            let tube = []
-            for (let s = 0 ; s < this.tubeSlot; s++){
-                tube[s] = this.colors[Math.floor(Math.random()*this.colors.length)];
-            }
-            this.set.push(tube)
-        }
-    }
-
-    emptyTubes(){
-        if (this.numberOfTube === 2){
-            let airTube = ['air','air','air','air'];
-            this.set.push(airTube);
-
-        } else {
-            let airTube1 = ['air','air','air','air'];
-            let airTube2 = ['air','air','air','air']
-            this.set.push(airTube1,airTube2)
-
-        }
-    }
-
-    drawTube(){
         
-        this.set.forEach((element,index) => {
-            
+        this.collectionSet(this.colorShuffle(this.colorSet()), this.tubeSlot)
+        this.createTubes();
+        this.updateTubes();
+        this.win();
+    }
+
+    colorSet(){
+        let bigList =[]
+        for (let i = 0; i < this.numberOfTube; i++){
+            const colorChoice = this.colors[Math.floor(Math.random() * this.colors.length)]
+            let testTube = []
+            for (let c =0; c < this.tubeSlot; c++){
+                testTube[c] = colorChoice
+                bigList.push(testTube[c])
+            }
+            this.collection.push(testTube)
+
+            this.colors.splice(this.colors.indexOf(colorChoice),1)
+        }
+        return bigList
+    }
+
+    colorShuffle(a){
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    collectionSet(array, increment){
+        let result = [];
+        let emptyTube1 = ['air','air','air','air']
+        let emptyTube2 = ['air','air','air','air'];
+        while(array.length) {
+            result.push(array.splice(0, increment));
+        }    
+
+        if (this.numberOfTube < 3){
+            result.push(emptyTube1)
+        } else {
+            result.push(emptyTube1,emptyTube2)
+        }
+        this.collection = result
+    }
+
+    createTubes() { // createTube
+        this.collection.forEach((tubeArr, index) => {
             this.tube = new Tube();
-
-            this.tube.domELement = this.create (`tube ${index}`);
-            this.selectTube(this.selectedClass);
-            
-            element.forEach((elm)=>{
+            this.tube.domELement = this.create(`tube ${index}`)
+            for (let i = 0; i < this.tubeSlot; i++){
                 let item = document.createElement("li");
-                item.innerHTML = elm;
                 this.tube.domELement.appendChild(item)
-            })
-
+            }
         });
     }
 
-    
-    
-    selectTube(selectedClass){
-        let selected;
-        this.tube.domELement.addEventListener("click", function(){
-            selected = parseInt(this.classList[1],10);
+    updateTubes() {
+        const tubeElmArr = [...document.body.querySelectorAll(".tube")];
 
-            if(selectedClass.length < 2 && selected != selectedClass[0]) {
-                selectedClass.push(selected)
-            } else {
-                selectedClass.splice(0, selectedClass.length);
-            }
-            
-            if (selectedClass.length ===2 && selectedClass[0] != selectedClass[1]){
-                game.checkTube()
+        tubeElmArr.forEach((element,index) => {
+
+            for (let i = 0; i < this.tubeSlot; i++){
+                let item = element.childNodes[i]
+                if (item && typeof this.collection[index][i] !== 'undefined'){
+                    item.innerHTML = this.collection[index][i];
+                    item.className = this.collection[index][i];
+                } else if(item && this.collection[index].length < i){
+                    item.innerHTML = '';
+                    item.className = 'air';
+                } 
             }
         })
+        console.log("after update");
+        console.log(this.collection);
     }
 
+    moveContent() {
+        let tube1 = this.collection[this.selectedClass[0]];
+        let tube2 = this.collection[this.selectedClass[1]];
 
-
-
-    grabcontent(selection1){
-
-    }
-
-    checkTube(){
-        console.log(this.set[this.selectedClass[0]]);
-        console.log(this.set[this.selectedClass[1]]);
-
-        if (this.set[this.selectedClass[0]].indexOf('air') != -1){
-            console.log(true)
-        } else if (this.set[this.selectedClass[1]].indexOf('air') != -1){
-            console.log(true)
-        } else {
-            this.selectedClass.splice(0,this.selectedClass.length)
-            console.log(false);
+        if (this.selectedClass[0] === this.selectedClass[1]){
+            console.log(this.selectedClass);
+            this.selectedClass =[]
+            console.log(this.selectedClass);
+        } else if (tube1.includes('air') === false && tube2[3] === 'air'){
+            tube2[tube2.lastIndexOf('air')] = tube1[0]
+            tube1[0] = 'air'
+        } 
+        
+        else if (tube1.includes('air') === false && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+            tube2[tube2.lastIndexOf('air')] = tube1[0]
+            tube1[0] = 'air'
         }
+        else if (tube1.includes('air') === true && tube2[3] === 'air'){
+            tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+            tube1[tube1.lastIndexOf('air')+1] = 'air'
+        }
+        else if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+            tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+            tube1[tube1.lastIndexOf('air')+1] = 'air'
+        } else if (tube1.lastIndexOf('air') === 3){
+            console.log('move not possible');
+        } else {
+            console.log('move not possible')
+        }
+        // this.selectedClass.splice(0, game.selectedClass.length)
+        this.selectedClass =[]
+    }
 
- 
+    win(){
+        this.completeTube = 0
+        this.collection.forEach((tube)=>{
+            const complete = arr => arr.every( s => s === arr[0])
+            if (complete(tube) === true && tube[0] !== 'air'){
+                console.log(tube);
+                this.completeTube++
+            }
+        })
 
-        // if (selection2[-1] === 'air'){
-        //     console.log('true');
-        //     return true
-        // } else {
-        //     console.log('false');
-        //     return false
-        // }
+        if (this.completeTube === this.numberOfTube){
+            console.log("You win")
+            location.href = '../confetti.html'
+        }
+    }
+
+    saveLastMoves(){
+        this.undoCollection.push(this.collection)
+        console.log("when pushed");
+        console.log(this.undoCollection);
+        if (this.undoCollection.length === 6){
+            this.undoCollection.shift()
+        }
+    }
+
+    undoMove(){
+        this.collection = this.undoCollection[4];
+        this.updateTubes();
+        this.selectedClass = [];
+       
     }
 }
 
-class Tube{
-    constructor(){
+class Tube {
+    constructor() {
         this.width = 30
-        this.heigth = 30
+        this.heigth = 30;
+        this.domELement = null;
     }
 }
+
+
+/*
+To do
+
+win method
+put event listener out side the draw || update html on clicks
+
+css format
+*/
 
 
 
