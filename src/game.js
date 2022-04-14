@@ -139,7 +139,7 @@ class Game {
 
         if (this.completeTube === this.numberOfTube){
             console.log("You win")
-            location.href = '../confetti.html'
+            // location.href = '../confetti.html'
         }
     }
 
@@ -179,7 +179,8 @@ css format
 */
 
 
-
+// const winner = document.getElementById("win-page")
+// winner.style.display = "none"
 
 
 

@@ -103,7 +103,7 @@ ul{
     background: darkred;
 }
 
-.deepink{
+.deeppink{
     width: 100%;
     height: 25%; 
     background: deeppink;
@@ -114,6 +114,11 @@ ul{
     height: 25%;
     background: transparent;
 }
+
+#youWon{
+    background-image: url(../winner.png);
+}
+
 
 /* 
 Inspiration test-tube:
