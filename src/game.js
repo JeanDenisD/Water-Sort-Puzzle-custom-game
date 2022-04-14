@@ -1,7 +1,7 @@
 class Game {
     constructor(create) { //, draw
         this.tube = null;
-        this.numberOfTube= 2;
+        this.numberOfTube= 3;
         this.tubeSlot = 4;
         this.colors = ["red", "blue", "yellow", "green", "purple", "lightgreen", "lightblue", "orange", "sienna", "grey","darkred","deeppink"];
         this.create = create;
@@ -139,7 +139,7 @@ class Game {
 
         if (this.completeTube === this.numberOfTube){
             console.log("You win")
-            // location.href = '../confetti.html'
+            location.href = 'confetti.html'
         }
     }
 

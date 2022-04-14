@@ -46,11 +46,11 @@ btn1.addEventListener('click', ()=> {location.reload()});
 const btn2 = document.querySelector('.undo-move');
 btn2.addEventListener('click', ()=> { game.undoMove()});
 
-// function incrementValue()
-// {
-//     var value = parseInt(document.getElementById('number').value, 10);
-//     value = isNaN(value) ? 2 : value;
-//     value++;
-//     document.getElementById('number').value = value;
-//     game.numberOfTube = value;
-// }
+function incrementValue()
+{
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 2 : value;
+    value++;
+    document.getElementById('number').value = value;
+    game.numberOfTube = value;
+}
