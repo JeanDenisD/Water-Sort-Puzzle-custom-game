@@ -9,8 +9,17 @@
     <link rel="stylesheet" href="./style/style.css">
 
 </head>
+
 <body>
-    <div class="board"></div>
+    <nav class="navbar navbar-light bg-light">
+        <form class="container-fluid justify-content-start">
+            <button class="btn new-game" type="button">New Game</button>
+            <!-- <input type="text" id="number" value="2"/>
+            <input type="button" onclick="incrementValue()" value="Increment Value" /> -->
+            <button class="btn undo-move" type="button">undo last move</button>
+        </form>
+      </nav>
+    <div id="board"></div>
 
     <script src="./src/game.js"></script>
     <script src="./src/main.js"></script>
