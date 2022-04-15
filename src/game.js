@@ -1,7 +1,8 @@
 class Game {
-    constructor(create) { //, draw
+    constructor(create,number) {
         this.tube = null;
-        this.numberOfTube= 3;
+        this.level = number;
+        this.numberOfTube = 2;
         this.tubeSlot = 4;
         this.colors = ["red", "blue", "yellow", "green", "purple", "lightgreen", "lightblue", "orange", "sienna", "grey","darkred","deeppink"];
         this.create = create;
@@ -16,7 +17,8 @@ class Game {
 
     start() {
         console.log('Water Sort Puzzle')
-        
+
+        this.numberOfTube = parseInt(this.level())
         this.collectionSet(this.colorShuffle(this.colorSet()), this.tubeSlot)
         this.createTubes();
         this.updateTubes();
@@ -55,7 +57,7 @@ class Game {
             result.push(array.splice(0, increment));
         }    
 
-        if (this.numberOfTube < 3){
+        if (this.numberOfTube <= 4){
             result.push(emptyTube1)
         } else {
             result.push(emptyTube1,emptyTube2)
@@ -90,8 +92,6 @@ class Game {
                 } 
             }
         })
-        console.log("after update");
-        console.log(this.collection);
     }
 
     moveContent() {
@@ -105,19 +105,43 @@ class Game {
         } else if (tube1.includes('air') === false && tube2[3] === 'air'){
             tube2[tube2.lastIndexOf('air')] = tube1[0]
             tube1[0] = 'air'
+            if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                tube1[tube1.lastIndexOf('air')+1] = 'air'}
+                if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                    tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                    tube1[tube1.lastIndexOf('air')+1] = 'air'}
         } 
         
         else if (tube1.includes('air') === false && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
             tube2[tube2.lastIndexOf('air')] = tube1[0]
             tube1[0] = 'air'
+            if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                tube1[tube1.lastIndexOf('air')+1] = 'air'}
+                if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                    tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                    tube1[tube1.lastIndexOf('air')+1] = 'air'}
         }
         else if (tube1.includes('air') === true && tube2[3] === 'air'){
             tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
             tube1[tube1.lastIndexOf('air')+1] = 'air'
+            if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                tube1[tube1.lastIndexOf('air')+1] = 'air'}
+                if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                    tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                    tube1[tube1.lastIndexOf('air')+1] = 'air'}
         }
         else if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
             tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
             tube1[tube1.lastIndexOf('air')+1] = 'air'
+            if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                tube1[tube1.lastIndexOf('air')+1] = 'air'}
+                if (tube1.includes('air') === true && tube2.lastIndexOf('air') < 3 && tube1[tube1.lastIndexOf('air') + 1] === tube2[tube2.lastIndexOf('air') + 1]){
+                    tube2[tube2.lastIndexOf('air')] = tube1[tube1.lastIndexOf('air')+1]
+                    tube1[tube1.lastIndexOf('air')+1] = 'air'}
         } else if (tube1.lastIndexOf('air') === 3){
             console.log('move not possible');
         } else {
@@ -132,7 +156,6 @@ class Game {
         this.collection.forEach((tube)=>{
             const complete = arr => arr.every( s => s === arr[0])
             if (complete(tube) === true && tube[0] !== 'air'){
-                console.log(tube);
                 this.completeTube++
             }
         })
@@ -145,8 +168,6 @@ class Game {
 
     saveLastMoves(){
         this.undoCollection.push(this.collection)
-        console.log("when pushed");
-        console.log(this.undoCollection);
         if (this.undoCollection.length === 6){
             this.undoCollection.shift()
         }

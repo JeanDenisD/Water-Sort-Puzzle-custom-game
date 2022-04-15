@@ -21,17 +21,9 @@
 	</head>
 
 	<body>
-		<nav class="navbar navbar-light bg-light">
-			<form>
-			  <button class="btn new-game" type="submit" onclick="location.href='index.html'">New Game</button>
-			</form>
-		  </nav>
+		<img src="/winner.png" alt="you won" style="display:flex; align-items: center; position: absolute; top: 50%; left:25%; transform:translate(0%, -50%);">
 		<canvas id="confetti" width="1" height="1"></canvas>
 
-		<script type="text/javascript">
-			const btn1 = document.querySelector('.new-game');
-			btn1.addEventListener('click', ()=> {location.reload('index.html')});
-		</script>
 		<script type="text/javascript">
 			var retina = window.devicePixelRatio,
 
@@ -425,9 +417,8 @@
 				window.addEventListener('resize', function(event){
 					confetti.resize();
 				});
+				window.addEventListener("click",()=>{location.href="/index.html"})
 			});
 		</script>
-		<script>src="./src/game.js"</script>
-		<script src="./src/main.js"></script>
 	</body>
 </html>

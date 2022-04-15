@@ -22,8 +22,20 @@ function createDomElement(className){
     return newElm;
 }
 
-const game = new Game(createDomElement);
-game.start();
+function levelChoice(){
+    let e = document.getElementById("selector");
+    let value = e.options[e.selectedIndex].value;
+
+    return value
+}
+
+
+let game = new Game(createDomElement,levelChoice);
+
+const launch = document.querySelector('.new-game');
+launch.addEventListener('click', ()=> {
+    game.start();
+});
 
 document.body.addEventListener("click", (event) => {
     const parent = event.target.parentNode;
@@ -40,17 +52,8 @@ document.body.addEventListener("click", (event) => {
     }
 })
 
-const btn1 = document.querySelector('.new-game');
-btn1.addEventListener('click', ()=> {location.reload()});
 
-const btn2 = document.querySelector('.undo-move');
-btn2.addEventListener('click', ()=> { game.undoMove()});
 
-function incrementValue()
-{
-    var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 2 : value;
-    value++;
-    document.getElementById('number').value = value;
-    game.numberOfTube = value;
-}
+
+// const btn2 = document.querySelector('.undo-move');
+// btn2.addEventListener('click', ()=> { game.undoMove()});
