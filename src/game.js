@@ -28,6 +28,7 @@ class Game {
     clearBoard(){
         const clear = document.getElementById('board');
         clear.innerHTML = "";
+        this.colors = ["red", "blue", "yellow", "green", "purple", "lightgreen", "lightblue", "orange", "sienna", "grey","darkred","deeppink"];
         this.selectedClass = [];
         this.parentTubes = [];
         this.collection = [];
