@@ -10,8 +10,9 @@ class Game {
         this.parentTubes = [];
         this.testTube = null;
         this.collection = [];
-        this.completeTube = 0
-        this.undoCollection = []
+        this.completeTube = 0;
+        this.undoCollection = [];
+        this.bigList = [];
     }
 
 
@@ -22,23 +23,36 @@ class Game {
         this.collectionSet(this.colorShuffle(this.colorSet()), this.tubeSlot)
         this.createTubes();
         this.updateTubes();
-        this.win();
+    }
+
+    clearBoard(){
+        const clear = document.getElementById('board');
+        clear.innerHTML = "";
+        this.selectedClass = [];
+        this.parentTubes = [];
+        this.collection = [];
+        this.undoCollection = [];
+        this.completeTube = 0;
+        this.testTube = null;
+        this.tube = null;
+        this.bigList = [];
+
     }
 
     colorSet(){
-        let bigList =[]
         for (let i = 0; i < this.numberOfTube; i++){
             const colorChoice = this.colors[Math.floor(Math.random() * this.colors.length)]
-            let testTube = []
+            this.testTube = []
             for (let c =0; c < this.tubeSlot; c++){
-                testTube[c] = colorChoice
-                bigList.push(testTube[c])
+                this.testTube[c] = colorChoice
+                this.bigList.push(this.testTube[c])
             }
-            this.collection.push(testTube)
+            this.collection.push(this.testTube)
 
-            this.colors.splice(this.colors.indexOf(colorChoice),1)
+            this.colors.splice(this.colors.indexOf(colorChoice),1);
         }
-        return bigList
+        console.log(this.bigList);
+        return this.bigList
     }
 
     colorShuffle(a){
@@ -57,7 +71,7 @@ class Game {
             result.push(array.splice(0, increment));
         }    
 
-        if (this.numberOfTube <= 4){
+        if (this.numberOfTube <= 3){
             result.push(emptyTube1)
         } else {
             result.push(emptyTube1,emptyTube2)
@@ -85,6 +99,7 @@ class Game {
                 let item = element.childNodes[i]
                 if (item && typeof this.collection[index][i] !== 'undefined'){
                     item.innerHTML = this.collection[index][i];
+                    console.log(this.collection[index][i]);
                     item.className = this.collection[index][i];
                 } else if(item && this.collection[index].length < i){
                     item.innerHTML = '';
@@ -98,7 +113,7 @@ class Game {
         let tube1 = this.collection[this.selectedClass[0]];
         let tube2 = this.collection[this.selectedClass[1]];
 
-        if (this.selectedClass[0] === this.selectedClass[1]){
+        if (this.selectedClass[0] === this.selectedClass[1] || tube2[0] !== 'air'){
             console.log(this.selectedClass);
             this.selectedClass =[]
             console.log(this.selectedClass);

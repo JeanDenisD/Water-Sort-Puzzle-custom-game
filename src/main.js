@@ -34,6 +34,7 @@ let game = new Game(createDomElement,levelChoice);
 
 const launch = document.querySelector('.new-game');
 launch.addEventListener('click', ()=> {
+    game.clearBoard()
     game.start();
 });
 

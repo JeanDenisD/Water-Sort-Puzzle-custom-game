@@ -3,6 +3,13 @@ body {
     color: transparent;
 }
 
+div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
 nav{
     margin-bottom: 4px;
 }
@@ -13,8 +20,8 @@ h3{
 }
 .tube {
     display: inline-block;
-    width: 50px;
-    height: 225px;
+    width: 3vw;
+    height: 25vh;
     background-color: transparent;
     margin: 55px;
     position: sticky;
